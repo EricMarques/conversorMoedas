@@ -5,7 +5,7 @@ import 'dart:async';
 import 'dart:convert';
 
 const request =
-    "https://api.hgbrasil.com/finance?format=json-cors&key=d76b6130";
+    "https://api.hgbrasil.com/finance?format=json-cors&key={INFORMAR CHAVE API}";
 
 void main() async {
   runApp(MaterialApp(

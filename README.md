@@ -1,6 +1,6 @@
 # Conversor de moedas
 
-<img src="#" alt="Interface do App" width="400">Print imagem app
+<img src="./images/screenshot.jpg" alt="Interface do App" width="400">
 
 ## Objetivo
 

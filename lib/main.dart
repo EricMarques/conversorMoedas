@@ -30,10 +30,36 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final realController = TextEditingController();
+  final dollarController = TextEditingController();
+  final euroController = TextEditingController();
+
+  void _realChanged(String text) {
+    double real = double.parse(text);
+    dollarController.text = (real / dollar).toStringAsFixed(2);
+    euroController.text = (real / euro).toStringAsFixed(2);
+  }
+
+  void _dollarChanged(String text) {
+    double dollar = double.parse(text);
+    realController.text = (dollar * this.dollar).toStringAsFixed(2);
+    euroController.text = ((dollar * this.dollar) / euro).toStringAsFixed(2);
+  }
+
+  void _euroChanged(String text) {
+    double euro = double.parse(text);
+    realController.text = (euro * this.euro).toStringAsFixed(2);
+    dollarController.text = ((euro * this.euro) / dollar).toStringAsFixed(2);
+  }
+
   double dollar;
   double euro;
 
-  void _resetFields() {}
+  void _resetFields() {
+    realController.clear();
+    dollarController.clear();
+    euroController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,50 +113,14 @@ class _HomeState extends State<Home> {
                         size: 130,
                         color: Colors.amber[300],
                       ),
-                      TextField(
-                        decoration: InputDecoration(
-                          labelText: "Reais",
-                          labelStyle: TextStyle(
-                            color: Colors.amber,
-                          ),
-                          border: OutlineInputBorder(),
-                          prefixText: "R\$",
-                        ),
-                        style: TextStyle(
-                          color: Colors.amber,
-                          fontSize: 25,
-                        ),
-                      ),
+                      buildTextField(
+                          "Reais", "R\$ ", realController, _realChanged),
                       Divider(),
-                      TextField(
-                        decoration: InputDecoration(
-                          labelText: "Dólares",
-                          labelStyle: TextStyle(
-                            color: Colors.amber,
-                          ),
-                          border: OutlineInputBorder(),
-                          prefixText: "US\$",
-                        ),
-                        style: TextStyle(
-                          color: Colors.amber,
-                          fontSize: 25,
-                        ),
-                      ),
+                      buildTextField(
+                          "Dólares", "US\$ ", dollarController, _dollarChanged),
                       Divider(),
-                      TextField(
-                        decoration: InputDecoration(
-                          labelText: "Euros",
-                          labelStyle: TextStyle(
-                            color: Colors.amber,
-                          ),
-                          border: OutlineInputBorder(),
-                          prefixText: "€",
-                        ),
-                        style: TextStyle(
-                          color: Colors.amber,
-                          fontSize: 25,
-                        ),
-                      ),
+                      buildTextField(
+                          "Euros", "€ ", euroController, _euroChanged),
                     ],
                   ),
                 );
@@ -140,4 +130,25 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+}
+
+Widget buildTextField(String label, String prefix,
+    TextEditingController moneyController, Function changed) {
+  return TextField(
+    keyboardType: TextInputType.number,
+    controller: moneyController,
+    decoration: InputDecoration(
+      labelText: label,
+      labelStyle: TextStyle(
+        color: Colors.amber,
+      ),
+      border: OutlineInputBorder(),
+      prefixText: prefix,
+    ),
+    style: TextStyle(
+      color: Colors.amber,
+      fontSize: 25,
+    ),
+    onChanged: changed,
+  );
 }
